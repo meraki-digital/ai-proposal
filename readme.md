@@ -1,8 +1,9 @@
 # Repo Template
 
+This repository serves as a starting template for new projects. It provides a structured workflow for planning, developing, and documenting software features using a series of guided steps.
+
 > 📋 [View Changelog](CHANGELOG.md) - See the evolution from simple tools to comprehensive workflow
 
-This repository serves as a starting template for new projects. It provides a structured workflow for planning, developing, and documenting software features using a series of guided steps.
 
 ## Features
 

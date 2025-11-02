@@ -2,6 +2,10 @@
 
 All notable changes between project versions are documented in this file.
 
+### Creator Note
+This update is in no way a criticism of Ryan Carson's original work. His repo (https://github.com/snarktank/ai-dev-tasks) was absolutely the inspiration and the "light bulb moment" for unlocking how our team thinks about and executes development projects.
+
+
 ## [main] - 2025-11-02
 
 ### Major Structural Changes
@@ -130,6 +134,3 @@ Beyond the workflow expansion, `main` introduces critical organizational infrast
 - **Configuration Management**: The addition of `AGENTS.md` provides comprehensive guidance on how AI agents should interact with the workflow
 - **Extensibility**: The `agentic/agents.d/` directory allows project-specific customizations without modifying core templates
 - **Sample Commands**: The `sample_commands.md` file provides practical examples for users learning the system
-
-### Creator Note
-This update is in no way a criticism of Ryan Carson's original work. His repo (https://github.com/snarktank/ai-dev-tasks) was absolutely the inspiration and the "light bulb moment" for unlocking how our team thinks about and executes development projects.
