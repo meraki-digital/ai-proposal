@@ -9,15 +9,15 @@ To guide an AI assistant in creating TWO Software Requirements Specification doc
 Both documents capture the same project but from different perspectives.
 
 ## Process
-
 1.  **Receive Initial Concept:** The user provides a brief 1-2 sentence description of their idea or problem.
 2.  **Assess Context:** Determine if greenfield or existing codebase enhancement.
-3.  **Conduct Discovery Interview:** Ask clarifying questions across all relevant domains. Get all technical AND business details.
-4.  **Generate BOTH SRS Documents:** Create Executive SRS first, then Technical SRS.
-5.  **Save Both:** 
+3.  **Branch:** Suggest a new branch name to user and seek confirmation. When new branch name is determined, create branch and switch to it.
+4.  **Conduct Discovery Interview:** Ask clarifying questions across all relevant domains. Get all technical AND business details.
+5.  **Generate BOTH SRS Documents:** Create Executive SRS first, then Technical SRS.
+6.  **Save Both:**
     - Executive: `/tasks/mods/[n]/[n]-srs-executive-[project-name].md`
     - Technical: `/tasks/mods/[n]/[n]-srs-technical-[project-name].md`
-6.  **Naysayer Mode:** Once both documents are saved, pause and prompt the user for permission to run critical analysis. Explain that you will challenge assumptions, identify feasibility flaws, expose likely client resistance/pushback, and evaluate plausibility. Upon user permission, conduct the review and:
+7.  **Naysayer Mode:** Once both documents are saved, pause and prompt the user for permission to run critical analysis. Explain that you will challenge assumptions, identify feasibility flaws, expose likely client resistance/pushback, and evaluate plausibility. Upon user permission, conduct the review and:
     - Amend, reduce, or augment BOTH SRS documents as needed
     - Add "Outstanding Concerns" section to the Appendix of the Technical SRS
     - Document all changes made during naysayer review
@@ -156,7 +156,7 @@ Use the **full structure** from `01-discover-requirements.md`:
 - **Examples:**
   - ✗ "Implement REST API with JWT authentication"
   - ✓ "Secure login system protecting sensitive financial data"
-  
+
   - ✗ "PostgreSQL with pgvector extension for embeddings"
   - ✓ "Intelligent search that understands your questions"
 
