@@ -4,6 +4,24 @@ This repository serves as a starting template for new projects. It provides a st
 
 > 📋 [View Changelog](CHANGELOG.md) - See the evolution from simple tools to comprehensive workflow
 
+---
+
+## 🎓 Want to See This Framework in Action?
+
+**Check out the Tutorial branch** to see a complete example project built using this framework.
+
+```bash
+git checkout tutorial
+```
+
+The tutorial shows a full Reading List Tracker app built from scratch in 2 hours 17 minutes, with:
+- Complete documentation trail (SRS → PRD → Tasks)
+- Working code you can run immediately
+- Step-by-step breakdown of the process
+
+**Start there first** to understand how this framework accelerates development.
+
+---
 
 ## Features
 
