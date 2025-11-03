@@ -27,7 +27,7 @@ This repository serves as a starting template for new projects. It provides a st
 
 4. Attach to your own GitHub repo:
    ```bash
-   git remote add origin https://github.com/your-username/your-new-repo.git
+   git remote set-url origin https://github.com/your-username/your-new-repo.git
    ```
 
 ## Usage
