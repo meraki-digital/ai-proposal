@@ -1,9 +1,54 @@
-# Reading list app only exists in BAM branch
-reading-list/
+# Private overrides (per AGENTS.md specification)
+agents.local.d/
+
+# Active proposals (client-sensitive content)
+agentic/proposals/*
+!agentic/proposals/README.md
+
+# Checkpoints (may contain sensitive proposal state)
+agentic/checkpoints/*
+!agentic/checkpoints/README.md
+
+# Company data (proprietary information)
+company/*
+!company/README.md
+
+# Templates and pricing (proprietary)
+templates/*
+!templates/README.md
+
+# Exports and deliverables
+*.pdf
+*.docx
+*.xlsx
+*.xls
+exports/
+
+# Archive (optional - uncomment if you don't want to track)
+# archive/
 
 # OS files
 .DS_Store
+Thumbs.db
 
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.bak
+.~lock.*
+
+# Node modules (if any tooling added)
+node_modules/
+
+# Python (if any scripts added)
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+env/
