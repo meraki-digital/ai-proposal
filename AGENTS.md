@@ -66,7 +66,7 @@ Rules:
 ### 1) Do Step 1
 ```
 name: Do Step 1
-intent: Run discovery using ./agentic/tasks/01-discover-requirements.md
+intent: Run discovery using ./agentic/tasks/01-discover-requirements.md as instructions
 inputs:
   - Determine target mod folder with this precedence:
       1) If user explicitly specifies one in the current message, use that
@@ -87,43 +87,47 @@ done: Return short bullet summaries of both SRS documents and their saved file p
 ### 2) Do Step 2
 ```
 name: Do Step 2
-intent: Create a PRD using ./agentic/tasks/02-create-prd.md
+intent: Create a PRD using
+  - ./agentic/tasks/02-create-prd.md as instructions
+  - ./agentic/architecture.md (if exists) to understand established patterns and tech stack
+  - ./agentic/tasks/mods/<mod-folder>/<mod-folder>-srs--executive-[project-name].md as context
+  - ./agentic/tasks/mods/<mod-folder>/<mod-folder>-srs--technical-[project-name].md as context
 inputs:
   - Resolve mod folder using the same precedence as Do Step 1
-writes: ./agentic/tasks/mods/<mod-folder>/02-prd.md
+writes: ./agentic/tasks/mods/<mod-folder>/<mod-folder>-prd-[project-name].md
 steps:
-  - Read ./agentic/tasks/02-create-prd.md
   - Generate a complete PRD for the chosen mod folder
   - Include goals, non-goals, user stories, acceptance criteria, risks, and open questions
-  - Save to ./agentic/tasks/mods/<mod-folder>/02-prd.md
+  - Ensure PRD aligns with patterns and conventions from architecture.md
 done: Return the PRD title, section list, and file path
 ```
 
 ### 3) Do Step 3
 ```
 name: Do Step 3
-intent: Generate a task list using ./agentic/tasks/03-generate-tasks.md
+intent: Generate a task list using
+  - ./agentic/tasks/03-generate-tasks.md as instructions
+  - ./agentic/tasks/mods/<mod-folder>/<mod-folder>-prd-[project-name].md as context
 inputs:
   - Resolve mod folder using the same precedence as Do Step 1
-writes: ./agentic/tasks/mods/<mod-folder>/03-tasks.md
+writes: ./agentic/tasks/mods/<mod-folder>/<mod-folder>-tasks-[project-name].md
 steps:
-  - Read ./agentic/tasks/03-generate-tasks.md
   - Produce a structured list with IDs, owners (placeholder if unknown), estimates, dependencies, and acceptance criteria
-  - Save to ./agentic/tasks/mods/<mod-folder>/03-tasks.md
 done: Return task count, critical path items, and file path
 ```
 
 ### 4) Do Step 4
 ```
 name: Do Step 4
-intent: Produce an explainer using ./agentic/tasks/explainers/04-explainer.md
+intent: Produce a tech-stack and associated explainers using
+  - ./agentic/tasks/04-explainer.md as instructions
+  - ./agentic/tasks/mods/<mod-folder>/<mod-folder>-srs-technical-[project-name].md as context
+  - ./agentic/tasks/mods/<mod-folder>/<mod-folder>-prd-[project-name].md as context
 inputs:
   - Resolve mod folder using the same precedence as Do Step 1
-writes: ./agentic/tasks/mods/<mod-folder>/04-explainer.md
+writes: ./agentic/tasks/mods/<mod-folder>/<mod-folder>-tech-stack-[project-name].md
 steps:
-  - Read ./agentic/tasks/explainers/04-explainer.md
   - Create a non-technical narrative with diagram placeholders and a glossary
-  - Save to ./agentic/tasks/mods/<mod-folder>/04-explainer.md
 done: Return key points and file path
 ```
 
@@ -133,18 +137,23 @@ name: Do Step 5
 intent: Process the task list using ./agentic/tasks/05-process-task-list.md
 inputs:
   - Resolve mod folder using the same precedence as Do Step 1
-writes: ./agentic/tasks/mods/<mod-folder>/05-processed-tasks.md
+writes: ./agentic/tasks/mods/<mod-folder>/05-processed-tasks.md, ./agentic/architecture.md, ./agentic/tasks/mods/<mod-folder>/<mod-folder>-progress-log.md
 steps:
+  - Read ./agentic/architecture.md (if exists) to understand established patterns and tech stack
   - Read ./agentic/tasks/05-process-task-list.md
   - Transform tasks into a ready-to-execute plan with phases, lanes, and dependency order
+  - Ensure plan follows patterns and conventions from architecture.md
   - Save to ./agentic/tasks/mods/<mod-folder>/05-processed-tasks.md
+  - Update ./agentic/architecture.md with any new tech decisions, patterns, or conventions discovered during planning (create file if it doesn't exist)
+  - Create ./agentic/tasks/mods/<mod-folder>/<mod-folder>-progress-log.md to track task completion summaries
 done: Return the phase map and file path
 ```
 
 ### 6) Do Step 6
 ```
 name: Do Step 6
-intent: Create a status document using ./agentic/tasks/06-generate-status-recap.md
+intent: Create a status document using
+  - ./agentic/tasks/06-generate-status-recap.md as instructions
 inputs:
   - Resolve mod folder using the same precedence as Do Step 1
 writes: (file to write specified in instructions file)
@@ -246,6 +255,45 @@ done: Return deployment status
 
 ## Agentic commands
 
+### Task Execution and Progress Tracking
+
+**IMPORTANT:** When executing tasks from a task list:
+
+1. **Mark Tasks Complete:** Update the task list markdown file to mark completed tasks with `[x]`
+2. **Commit After Each Task:** Create a git commit after completing each individual task
+3. **Progress Log:** Append a summary to `<mod-folder>-progress-log.md` after each task with:
+   - Task number and description
+   - Completion status (✅ Complete) and commit hash
+   - Summary of what was accomplished
+   - Key findings, metrics, or observations
+   - Technical details or optimization opportunities discovered
+   - Next steps
+4. **Commit Progress Log:** Include the updated progress log in each task commit
+
+**Example Progress Log Entry:**
+```
+## Task 0.4 - Run EXPLAIN ANALYZE on Slow Queries
+
+**Status:** ✅ Complete
+**Commit:** d81b8f1
+
+**Summary:**
+Added EXPLAIN ANALYZE output for top 3 slowest queries
+
+**Key Findings:**
+- Sequential scans on 1.3M row transactions table
+- Parallel processing with 2 workers
+- Complex date conversion overhead
+- No index usage
+
+**Optimization Opportunities:**
+- ✅ Fiscal calendar dimension
+- ✅ Covering indexes
+- ✅ Materialized views
+```
+
+---
+
 ### Checkpoint
 ```
 name: Checkpoint
@@ -281,20 +329,26 @@ done: Confirm reload success and display project name + objective line.
 ### Promote to Production
 ```
 name: Promote to Production
-intent: Promote poc-dev to poc-prod (production deployment)
+intent: Promote development branch to production branch (fast-forward merge)
 inputs:
-  - None (runs immediately)
+  - Auto-detect branch names using this logic:
+    1) Check current branch name
+    2) If current branch contains 'dev' or 'development': use as DEV_BRANCH
+    3) Look for corresponding prod branch (replace 'dev' with 'prod' in branch name)
+    4) If branches don't follow pattern, ask user: "Promote from [current] to which production branch?"
+  - Example patterns: poc-dev→poc-prod, dev→prod, development→production, main-dev→main
 writes: none
 steps:
-  - Verify current branch is poc-dev with `git branch --show-current`
-  - If not on poc-dev, abort with error message
+  - Detect DEV_BRANCH and PROD_BRANCH using input logic
+  - Verify current branch is DEV_BRANCH with `git branch --show-current`
+  - If not on DEV_BRANCH, abort with error message
   - Ensure working directory is clean with `git status`
-  - Checkout poc-prod: `git checkout poc-prod`
-  - Merge poc-dev: `git merge poc-dev --ff-only`
-  - Push to production: `git push origin poc-prod`
-  - Switch back to dev: `git checkout poc-dev`
+  - Checkout PROD_BRANCH: `git checkout {PROD_BRANCH}`
+  - Merge DEV_BRANCH: `git merge {DEV_BRANCH} --ff-only`
+  - Push to production: `git push origin {PROD_BRANCH}`
+  - Switch back to dev: `git checkout {DEV_BRANCH}`
   - Confirm promotion complete
-done: Return "Promoted to production. Switched back to poc-dev." with deployment URLs
+done: Return "Promoted {DEV_BRANCH} to {PROD_BRANCH}." with deployment URLs if known
 ```
 
 ### Show Commands
@@ -332,13 +386,16 @@ name: Bug Fix Complete
 intent: End bug fix session and document the fixes
 inputs:
   - None
-writes: poc/bugs/YYYY-MM-DD-HHMM-bug-fix.md or prod/bugs/YYYY-MM-DD-HHMM-bug-fix.md
+writes: bugs/YYYY-MM-DD-HHMM-bug-fix-[branch].md or [environment]/bugs/YYYY-MM-DD-HHMM-bug-fix.md
 steps:
-  - Determine mode: check current branch with `git branch --show-current`; if branch contains 'poc', mode=poc, else mode=prod
-  - Create folder if needed: `mkdir -p poc/bugs` or `mkdir -p prod/bugs`
+  - Determine environment from current branch with `git branch --show-current`:
+    * If branch contains 'dev' or 'development': environment='dev'
+    * If branch contains 'prod' or 'production' or 'main': environment='prod'
+    * Else: environment=branch-name
+  - Create folder if needed: `mkdir -p bugs` (root) or `mkdir -p {environment}/bugs` (if environment folders exist)
   - Generate timestamp: {{timestamp}} reformatted to YYYY-MM-DD-HHMM
   - Summarize all thread content from 'Bug Fix' to 'Bug Fix Complete'
-  - Write summary to <mode>/bugs/<timestamp>-bug-fix.md with timestamp and details
+  - Write summary to bugs/<timestamp>-bug-fix-<environment>.md or <environment>/bugs/<timestamp>-bug-fix.md
 done: Return file path and brief summary of fixes
 ```
 
@@ -356,6 +413,8 @@ done: Return file path and brief summary of fixes
 ---
 
 ## Technology constraints
+
+**Note:** Project-specific technology constraints are documented in `./agentic/agents.d/supplemental.md`.
 
 ### ⚠️ CRITICAL: No Pandas in Vercel Serverless Deployments
 
