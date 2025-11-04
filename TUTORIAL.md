@@ -32,7 +32,7 @@ Switch to the `tutorial` branch and open this file again:
 git checkout tutorial
 ```
 
-Then come back here. You'll see the complete journey from "I want to track my reading" to a shipped product—with commentary explaining what happened at each step and why.
+Then proceed to the next branch. You'll see the complete journey from "I want to track my reading" to a shipped product—with commentary explaining what happened at each step and why.
 
 After walking through the tutorial, you'll understand:
 - How the 6 steps flow naturally from one to another
@@ -46,4 +46,4 @@ After walking through the tutorial, you'll understand:
 git checkout tutorial
 ```
 
-See you there.
+Open the tutorial.md file when you get there!
